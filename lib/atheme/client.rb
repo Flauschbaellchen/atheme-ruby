@@ -7,8 +7,6 @@ module Atheme
       port: '8080'
     }
 
-    attr_reader :user, :ip
-
     def initialize(opts={})
       opts.each_key do |k|
         if self.respond_to?("#{k}=")

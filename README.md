@@ -7,7 +7,7 @@ hash, like so:
     Atheme::Client.new(
       :protocol=>"http",
       :hostname=>"localhost",
-      :port=>1234
+      :port=>8080
     )
 
 and/or use the builder idiom:
@@ -15,7 +15,7 @@ and/or use the builder idiom:
     Atheme::Client.new do |c| 
       c.protocol = "http"
       c.hostname = "localhost"
-      c.port = 1234
+      c.port = 8080
     end
 
 If an option is missing the default ones as stated above are used.
