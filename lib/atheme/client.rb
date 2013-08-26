@@ -20,9 +20,10 @@ module Atheme
     end
 
     def login(user, password, ip="127.0.0.1")
-      return true unless logged_in?
+      return true if logged_in?
       @cookie = self.call("atheme.login", user, password, ip)
       @user, @ip = user, ip
+      true
     end
 
     def logout
@@ -38,6 +39,10 @@ module Atheme
     def call(*args)
       @server ||= connect_client
       @server.call(*args)
+    end
+
+    def service_call(service, method, *args)
+      self.call("atheme.command", @cookie, @user, @ip, service, method, *args)
     end
 
     def protocol=(p)

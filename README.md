@@ -5,9 +5,9 @@ To instantiate, you can either pass the required arguments as options in a
 hash, like so:
 
     Atheme::Client.new(
-      :protocol=>"http",
-      :hostname=>"localhost",
-      :port=>8080
+      protocol: "http",
+      hostname: "localhost",
+      port: 8080
     )
 
 and/or use the builder idiom:
