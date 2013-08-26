@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.homepage = "http://github.com/Flauschbaellchen/atheme-ruby"
   spec.license = "MIT"
   spec.summary = %Q{Atheme-XMLRPC interface for Ruby}
-  spec.description = %Q{Provides a ruby interface for atheme's XMPRPC API}
-  spec.email = "noxx@penya.de"
+  spec.description = %Q{Provides a ruby interface for Atheme's XMLRPC API}
+  spec.email = ["noxx@penya.de"]
   spec.authors = ["Noxx"]
-  spec.version = Atheme::Version
+  spec.version = Atheme::VERSION
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
