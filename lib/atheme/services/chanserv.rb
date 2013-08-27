@@ -11,11 +11,11 @@ module Atheme
       end
 
       command :registered do
-        Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+        Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
       end
 
       command :last_used do
-        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
       end
 
       command :mode_lock do

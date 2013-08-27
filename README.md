@@ -64,7 +64,7 @@ I think you're getting the point...
 However, you can perform additional questions on these return values:
 
     @client.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
-    @client.chanserv.info('#opers').registered #=> #<DateTime "2013-05-07 00:00:00 +0200">
+    @client.chanserv.info('#opers').registered #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
 
 Take a look into _lib/atheme/services/*_ to find available subcommands.
 

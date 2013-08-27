@@ -1,19 +1,10 @@
 module Atheme
   class ServiceReply
     def initialize(hash)
-      @hash = hash
-    end
-
-    def method_missing(method, *args, &block)
-      if @hash.has_key? method
-        return @hash[method] unless @hash[method].kind_of? Proc
-        return @hash[method] = self.instance_eval(&(@hash[method]))
+      hash.each do |k, v|
+        v = self.instance_eval(&v) if v.kind_of? Proc
+        define_singleton_method k, -> {v}
       end
-      super
-    end
-
-    def to_s
-      raw_output
     end
 
     private

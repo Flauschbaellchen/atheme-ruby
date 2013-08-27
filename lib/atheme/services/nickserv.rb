@@ -8,7 +8,7 @@ module Atheme
       end
 
       command :registered do
-        Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+        Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
       end
 
       command :entity_id do
@@ -24,15 +24,16 @@ module Atheme
       end
 
       command :last_seen do
-        Date.parse(match(/Last\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+        Date.parse(match(/Last\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
       end
 
       command :user_seen do
-        Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+        Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
       end
 
       command :nicks do
-        match(/Nicks\s+:\s+(\w+(?:[^\s]+)*)$/).split
+        nicks = match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/)
+        nicks && nicks.split || []
       end
 
       command :email do
