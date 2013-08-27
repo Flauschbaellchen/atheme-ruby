@@ -1,5 +1,10 @@
 atheme-ruby
 ===========
+The gem was inspired by the one of [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
+However, his gem use module-methods and thus does not allow concurrent connections within the same script.
+
+Usage
+-----
 
 To instantiate, you can either pass the required arguments as options in a
 hash, like so:
@@ -41,17 +46,18 @@ However, you can perform additional questions on these return values:
     @client.chanserv.info('#opers').founder       #=> "FounderNickOfOpers"
     @client.chanserv.info('#opers').registered_at #=> #<DateTime "2013-05-07 00:00:00 +0200">
 
-Take a look into _atheme/services/*_ to find available subcommands
+Take a look into _atheme/services/*_ to find available subcommands.
 
 TODO
-====
-
+----
+* Tests!
 * Add more parsers/subcommands to all kinds of services (pull requests welcome)
 * Return objects instead of strings on subcommands where useful. E.g. #<Atheme::User> object on _@client.chanserv.info('#opers').founder_.
   Then it would be much easier to do additional lookups like _@client.chanserv.info('#opers').founder.registered_
+* Brainstorming: Catch API-Errors and handle them gracefully. Provide a #success? method to decide if the command was successfully executed or not. Need to handle chains like the ones above.
 
 Contributing to atheme-ruby
-===========================
+---------------------------
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -62,7 +68,7 @@ Contributing to atheme-ruby
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 Copyright
-=========
+---------
 
-Copyright (c) 2013 Noxx. See LICENSE for further details.
+Copyright (c) 2013 Noxx/Flauschbaellchen. See LICENSE for further details.
 
