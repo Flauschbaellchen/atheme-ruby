@@ -6,7 +6,7 @@ module Atheme
 
     def self.inherited(klass)
       class_name = klass.name.gsub('Atheme::', '')
-      Atheme::Client.class_eval <<-RUBY
+      Atheme::Session.class_eval <<-RUBY
         def #{class_name.downcase}
           @#{class_name.downcase} ||= #{klass.name}.new(self)
         end
@@ -30,12 +30,12 @@ module Atheme
       Atheme::TMP_COMMANDS << [name.to_sym, block]
     end
 
-    def initialize(client)
-      @client = client
+    def initialize(session)
+      @session = session
     end
 
     def method_missing(method, *args, &block)
-      @raw_output = @client.service_call(service_name, method, *args)
+      @raw_output = @session.service_call(service_name, method, *args)
       build_response_object method
     end
 

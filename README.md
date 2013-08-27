@@ -26,7 +26,7 @@ And you're ready to rumble!
 To instantiate, you can either pass the required arguments as options in a
 hash, like so:
 
-    Atheme::Client.new(
+    Atheme::Session.new(
       protocol: "http",
       hostname: "localhost",
       port: 8080
@@ -34,7 +34,7 @@ hash, like so:
 
 and/or use the builder idiom:
 
-    Atheme::Client.new do |c| 
+    Atheme::Session.new do |c| 
       c.protocol = "http"
       c.hostname = "localhost"
       c.port = 8080
@@ -44,38 +44,38 @@ If an option is missing, the default ones as stated above are used.
 
 ### Login
 
-The initial client uses an anonymous login which can be re-choosen by calling @client.anonymous! or by logging out.
+The initial session uses an anonymous login which can be re-choosen by calling @session.anonymous! or by logging out.
 
 To login with an account registered with NickServ use the following:
 
-    @client.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
-    @client.logged_in? #=> true or false
+    @session.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
+    @session.logged_in? #=> true or false
 
 The cookie is a random generated string from Atheme for your current login session and will be valid for one(1) hour or until the server is shut down or restarted.
 
 You can relogin using the cookie by calling:
 
-    @client.relogin(cookie, user, ip="127.0.0.1")
+    @session.relogin(cookie, user, ip="127.0.0.1")
 
 which saves you from asking users everytime again for their passwords.
 
 You may logout after you finished your work:
 
-    @client.logout
+    @session.logout
 
 ### Service-Calls
 
 This gem supports all service-bots of atheme, like chanserv, nickserv etc.
 You can call any commands you want to perform like you do on IRC:
 
-    @client.chanserv.info('#opers') # like /msg chanserv info #opers
-    @client.chanserv.list           # like /msg chanserv list
+    @session.chanserv.info('#opers') # like /msg chanserv info #opers
+    @session.chanserv.list           # like /msg chanserv list
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
 
-    @client.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
-    @client.chanserv.info('#opers').registered #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
+    @session.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
+    @session.chanserv.info('#opers').registered #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
 
 Take a look into _lib/atheme/services/*_ to find available subcommands.
 
@@ -83,8 +83,8 @@ TODO
 ----
 * Tests!
 * Add more parsers/subcommands to all kinds of services (pull requests welcome)
-* Return objects instead of strings on subcommands where useful. E.g. #<Atheme::User> object on _@client.chanserv.info('#opers').founder_.
-  Then it would be much easier to do additional lookups like _@client.chanserv.info('#opers').founder.registered_
+* Return objects instead of strings on subcommands where useful. E.g. #<Atheme::User> object on _@session.chanserv.info('#opers').founder_.
+  Then it would be much easier to do additional lookups like _@session.chanserv.info('#opers').founder.registered_
 * Brainstorming: Catch API-Errors and handle them gracefully. Provide a #success? method to decide if the command was successfully executed or not. Need to handle chains like the ones above.
 
 Contributing to atheme-ruby

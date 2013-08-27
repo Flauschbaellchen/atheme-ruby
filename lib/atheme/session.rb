@@ -1,5 +1,5 @@
 module Atheme
-  class Client
+  class Session
 
     DEFAULT_CONNECTION_SETTINGS = {
       protocol: 'http',
