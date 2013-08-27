@@ -35,8 +35,6 @@ module Atheme
     end
 
     def method_missing(method, *args, &block)
-      raise Atheme::Error::InvalidUser, 'No user has been set. Please login first.' unless @client.logged_in?
-
       @raw_output = @client.service_call(service_name, method, *args)
       build_response_object method
     end

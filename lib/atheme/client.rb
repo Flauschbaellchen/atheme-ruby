@@ -6,6 +6,7 @@ module Atheme
       hostname: 'localhost',
       port: '8080'
     }
+    DEFAULT_IP = '127.0.0.1'
 
     def initialize(opts={})
       opts.each_key do |k|
@@ -17,23 +18,31 @@ module Atheme
       end
 
       yield self if block_given?
+
+      self.anonymous!
     end
 
-    def login(user, password, ip="127.0.0.1")
+    def login(user, password, ip=DEFAULT_IP)
       return true if logged_in?
       @cookie = self.call("atheme.login", user, password, ip)
       @user, @ip = user, ip
-      true
+      @cookie
+    end
+
+    def relogin(cookie, user, ip=DEFAULT_IP)
+      @cookie, @user, @ip = cookie, user, ip
     end
 
     def logout
       return true unless logged_in?
       self.call("atheme.logout", @cookie, @user, @ip)
-      @cookie, @user, @ip = nil
+      @cookie, @user, @ip = '.', '.', DEFAULT_IP
+      true
     end
+    alias_method :anonymous!, :logout
 
     def logged_in?
-      @cookie ? true : false
+      @cookie && @cookie!='.' ? true : false
     end
 
     def call(*args)

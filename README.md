@@ -1,10 +1,8 @@
-atheme-ruby
-===========
+# atheme-ruby
 The gem was inspired by the one of [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
 However, his gem use module-methods and thus does not allow concurrent connections within the same script.
 
-Install
--------
+## Install
 
 Currently, no official gem yet exists, so you need to clone the repository and build it yourself:
 
@@ -12,9 +10,6 @@ Currently, no official gem yet exists, so you need to clone the repository and b
     cd atheme-ruby
     gem build atheme-ruby.gemspec
     gem install atheme-ruby-x.x.x.gem
-
-Usage
------
 
 Standalone script:
 
@@ -25,6 +20,8 @@ Bundler/Rails:
     gem 'atheme-ruby', require: 'atheme'
 
 And you're ready to rumble!
+
+## Usage
 
 To instantiate, you can either pass the required arguments as options in a
 hash, like so:
@@ -45,16 +42,30 @@ and/or use the builder idiom:
 
 If an option is missing, the default ones as stated above are used.
 
-After you initialized an Atheme::Client object, e.g. @client, you need to login to perform and send any commands.
+### Login
 
-    @client.login(username, password, ip="127.0.0.1") #=> true on success
+The initial client uses an anonymous login which can be re-choosen by calling @client.anonymous! or by logging out.
+
+To login with an account registered with NickServ use the following:
+
+    @client.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
     @client.logged_in? #=> true or false
+
+The cookie is a random generated string from Atheme for your current login session and will be valid for one(1) hour or until the server is shut down or restarted.
+
+You can relogin using the cookie by calling:
+
+    @client.relogin(cookie, user, ip="127.0.0.1")
+
+which saves you from asking users everytime again for their passwords.
 
 You may logout after you finished your work:
 
     @client.logout
 
-This gem supports all service-bots of atheme, like chanser, nickserv etc.
+### Service-Calls
+
+This gem supports all service-bots of atheme, like chanserv, nickserv etc.
 You can call any commands you want to perform like you do on IRC:
 
     @client.chanserv.info('#opers') # like /msg chanserv info #opers
