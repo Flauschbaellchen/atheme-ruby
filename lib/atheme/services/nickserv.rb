@@ -60,7 +60,7 @@ module Atheme
       end
 
       command :groups do
-        flags = match(/Groups\s+:\s+([^\s]+(?:\s[^\s]+)*)$/)
+        flags = match(/Groups\s+:\s+(.+)$/)
         flags && flags.split || []
       end
     end
