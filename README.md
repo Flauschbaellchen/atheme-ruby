@@ -23,7 +23,7 @@ and/or use the builder idiom:
       c.port = 8080
     end
 
-If an option is missing the default ones as stated above are used.
+If an option is missing, the default ones as stated above are used.
 
 After you initialized an Atheme::Client object, e.g. @client, you need to login to perform and send any commands.
 
@@ -46,7 +46,7 @@ However, you can perform additional questions on these return values:
     @client.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
     @client.chanserv.info('#opers').registered #=> #<DateTime "2013-05-07 00:00:00 +0200">
 
-Take a look into _atheme/services/*_ to find available subcommands.
+Take a look into _lib/atheme/services/*_ to find available subcommands.
 
 TODO
 ----
