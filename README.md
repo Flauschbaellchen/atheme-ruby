@@ -43,8 +43,8 @@ You can call any commands you want to perform like you do on IRC:
 I think you're getting the point...
 However, you can perform additional questions on these return values:
 
-    @client.chanserv.info('#opers').founder       #=> "FounderNickOfOpers"
-    @client.chanserv.info('#opers').registered_at #=> #<DateTime "2013-05-07 00:00:00 +0200">
+    @client.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
+    @client.chanserv.info('#opers').registered #=> #<DateTime "2013-05-07 00:00:00 +0200">
 
 Take a look into _atheme/services/*_ to find available subcommands.
 
