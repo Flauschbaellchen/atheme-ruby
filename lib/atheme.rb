@@ -3,8 +3,10 @@ end
 
 require "xmlrpc/client"
 
-Dir[File.expand_path('../atheme/*.rb', __FILE__)].each { |file|
-  require file
-}
-
+require "atheme/helpers"
+require "atheme/errors"
+require "atheme/version"
+require "atheme/client"
+require "atheme/service"
+require "atheme/service_reply"
 
