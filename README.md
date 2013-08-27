@@ -3,8 +3,28 @@ atheme-ruby
 The gem was inspired by the one of [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
 However, his gem use module-methods and thus does not allow concurrent connections within the same script.
 
+Install
+-------
+
+Currently, no official gem yet exists, so you need to clone the repository and build it yourself:
+
+    git clone git@github.com:Flauschbaellchen/atheme-ruby.git
+    cd atheme-ruby
+    gem build atheme-ruby.gemspec
+    gem install atheme-ruby-x.x.x.gem
+
 Usage
 -----
+
+Standalone script:
+
+    require 'atheme'
+
+Bundler/Rails:
+
+    gem 'atheme-ruby', require: 'atheme'
+
+And you're ready to rumble!
 
 To instantiate, you can either pass the required arguments as options in a
 hash, like so:
