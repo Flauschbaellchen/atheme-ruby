@@ -3,7 +3,6 @@ module Atheme
   TMP_COMMANDS = []
 
   class Service
-    attr_reader :raw_output
 
     def self.inherited(klass)
       class_name = klass.name.gsub('Atheme::', '')
@@ -47,10 +46,22 @@ module Atheme
       if Atheme::PARSERS.has_key?(service_name) && Atheme::PARSERS[service_name].has_key?(method)
         response.merge! Atheme::PARSERS[service_name][method]
       end
+      response.each do |k, v|
+        response[k] = self.instance_eval(&v) if v.kind_of? Proc
+      end
       Atheme::ServiceReply.new(response)
     end
 
     private
+
+    def raw_output
+      @raw_output
+    end
+
+    def match(expression)
+      ematch = expression.match(raw_output)
+      ematch && ematch[1]
+    end
 
     def service_name
       self.class.name.gsub('Atheme::', '').downcase

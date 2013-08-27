@@ -2,6 +2,7 @@ module Atheme
 end
 
 require "xmlrpc/client"
+require 'ostruct'
 
 require "atheme/helpers"
 require "atheme/errors"
