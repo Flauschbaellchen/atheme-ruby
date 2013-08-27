@@ -28,7 +28,7 @@ module Atheme
 
       command :flags do
         flags = match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/)
-        flags && flags.split
+        flags && flags.split || []
       end
 
       command :prefix do
