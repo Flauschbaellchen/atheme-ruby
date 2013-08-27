@@ -2,14 +2,37 @@ module Atheme
   class ChanServ < Service
 
     parse :info do
-      command(:founder) { match(/Founder\s+:\s+(\w+)/) }
+      command(:founder) do
+        match(/Founder\s+:\s+(\w+)/)
+      end
+
+      command :successor do
+        match(/Successor\s+:\s+\(none\)/) ? nil : match(/Successor\s+:\s+(\w+)/)
+      end
 
       command :registered do
         Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
       end
 
-      command :successor do
-        raw_output.match(/Successor\s+:\s+\(none\)/) ? nil : match(/Successor\s+:\s+(\w+)/)
+      command :last_used do
+        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)).to_time
+      end
+
+      command :mode_lock do
+        match(/Mode\slock\s+:\s+([-+A-Za-z0-9]*)/)
+      end
+
+      command :entry_msg do
+        match(/Entrymsg\s+:\s+(.+)/)
+      end
+
+      command :flags do
+        flags = match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/)
+        flags && flags.split
+      end
+
+      command :prefix do
+        match(/Prefix\s+:\s+([^\s])/)
       end
     end
 

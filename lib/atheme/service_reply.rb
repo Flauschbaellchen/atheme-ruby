@@ -12,10 +12,15 @@ module Atheme
       super
     end
 
+    def to_s
+      raw_output
+    end
+
     private
 
     def match(expression)
-      expression.match(raw_output)[1]
+      ematch = expression.match(raw_output)
+      ematch && ematch[1]
     end
 
   end
