@@ -2,11 +2,17 @@ module Atheme
   class ChanServ < Service
 
     parse :info do
-      command(:founder) do
+      responds_with Atheme::Channel
+
+      command :name do
+        match(/^Information\son\s([&#+][^:]+):$/)
+      end
+
+      command :founder, as: Atheme::User do
         match(/Founder\s+:\s+(\w+)/)
       end
 
-      command :successor do
+      command :successor, as: Atheme::User do
         match(/Successor\s+:\s+\(none\)/) ? nil : match(/Successor\s+:\s+(\w+)/)
       end
 

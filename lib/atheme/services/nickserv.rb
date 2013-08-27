@@ -2,8 +2,13 @@ module Atheme
   class NickServ < Service
 
     parse :info do
+      responds_with Atheme::User
 
-      command :account do
+      command :name do
+        match(/^Information\son\s([^\s]+)/)
+      end
+
+      command :account, as: Atheme::User do
         match(/\(account\s([^\(]+)\):/)
       end
 
@@ -28,7 +33,8 @@ module Atheme
       end
 
       command :user_seen do
-        Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+        time = match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)
+        time && Date.parse(time)
       end
 
       command :nicks do
@@ -49,7 +55,7 @@ module Atheme
         flags && flags.split || []
       end
 
-      command :protected? do
+      command :protected do
         match(/has\s(enabled)\snick\sprotection/) ? true : false
       end
 

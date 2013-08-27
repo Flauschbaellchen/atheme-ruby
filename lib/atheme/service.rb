@@ -1,8 +1,49 @@
 module Atheme
-  PARSERS = Hash.new
-  TMP_COMMANDS = []
-
   class Service
+    @@parsers = Hash.new
+    @@tmp_commands = []
+    @@tmp_class = nil
+
+    class Parser
+      attr_accessor :responder
+      attr_reader :commands
+
+      def initialize
+        @commands = []
+      end
+
+      def register_command(command)
+        @commands << command
+      end
+    end
+
+    class Command
+      attr_reader :name, :block
+
+      def initialize(name, opts, &block)
+        @name = name
+        @block = block
+        @opts = opts
+      end
+
+      def call(session, raw_output)
+        @raw_output = raw_output
+        value = self.instance_eval(&@block)
+        return value unless @opts[:as] || value.nil?
+        @opts[:as].new(session, value)
+      end
+
+      private
+      def raw_output
+        @raw_output
+      end
+
+      def match(expression)
+        ematch = expression.match(raw_output)
+        ematch && ematch[1]
+      end
+    end
+
 
     def self.inherited(klass)
       class_name = klass.name.gsub('Atheme::', '')
@@ -12,22 +53,22 @@ module Atheme
         end
       RUBY
 
-      Atheme::PARSERS[class_name.downcase] ||= Hash.new
+      @@parsers[class_name.downcase] ||= Hash.new
     end
 
     def self.parse(cmd, &block)
-      Atheme::TMP_COMMANDS.clear
       service = self.name.sub('Atheme::', '').downcase
+      @@parsers[service][cmd] = Atheme::Service::Parser.new
+      @@staged_parser = @@parsers[service][cmd]
       yield if block_given?
-      Atheme::TMP_COMMANDS.each do |subcmd, block|
-        puts "Register #{service} > #{cmd} > #{subcmd}"
-        Atheme::PARSERS[service][cmd] ||= Hash.new
-        Atheme::PARSERS[service][cmd][subcmd] = block
-      end
     end
 
-    def self.command(name, &block)
-      Atheme::TMP_COMMANDS << [name.to_sym, block]
+    def self.command(name, opts={}, &block)
+      @@staged_parser.register_command(Atheme::Service::Command.new(name, opts, &block))
+    end
+
+    def self.responds_with(atheme_class)
+      @@staged_parser.responder = atheme_class
     end
 
     def initialize(session)
@@ -35,32 +76,20 @@ module Atheme
     end
 
     def method_missing(method, *args, &block)
-      @raw_output = @session.service_call(service_name, method, *args)
-      build_response_object method
-    end
+      raw_output = @session.service_call(service_name, method, *args)
 
-    def build_response_object(method)
       response = {raw_output: raw_output}
-      if Atheme::PARSERS.has_key?(service_name) && Atheme::PARSERS[service_name].has_key?(method)
-        response.merge! Atheme::PARSERS[service_name][method]
+      parser = @@parsers.has_key?(service_name) && @@parsers[service_name][method]
+
+      return Atheme::Entity.new(@session, response) unless parser
+      
+      parser.commands.each do |command|
+        response[command.name] = command.call(@session, raw_output)
       end
-      response.each do |k, v|
-        response[k] = self.instance_eval(&v) if v.kind_of? Proc
-      end
-      Atheme::ServiceReply.new(response)
+      parser.responder.new(@session, response) if parser.responder
     end
 
     private
-
-    def raw_output
-      @raw_output
-    end
-
-    def match(expression)
-      ematch = expression.match(raw_output)
-      ematch && ematch[1]
-    end
-
     def service_name
       self.class.name.gsub('Atheme::', '').downcase
     end

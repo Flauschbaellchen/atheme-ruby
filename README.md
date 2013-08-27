@@ -74,17 +74,17 @@ You can call any commands you want to perform like you do on IRC:
 I think you're getting the point...
 However, you can perform additional questions on these return values:
 
-    @session.chanserv.info('#opers').founder    #=> "FounderNickOfOpers"
-    @session.chanserv.info('#opers').registered #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
+    @session.chanserv.info('#opers').founder      #=> #<Atheme::User ...>
+    @session.chanserv.info('#opers').founder.name #=> "Nick_Of_Founder"
+    @session.chanserv.info('#opers').registered   #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
 
 Take a look into _lib/atheme/services/*_ to find available subcommands.
 
 TODO
 ----
 * Tests!
+* Docs!
 * Add more parsers/subcommands to all kinds of services (pull requests welcome)
-* Return objects instead of strings on subcommands where useful. E.g. #<Atheme::User> object on _@session.chanserv.info('#opers').founder_.
-  Then it would be much easier to do additional lookups like _@session.chanserv.info('#opers').founder.registered_
 * Brainstorming: Catch API-Errors and handle them gracefully. Provide a #success? method to decide if the command was successfully executed or not. Need to handle chains like the ones above.
 
 Contributing to atheme-ruby
