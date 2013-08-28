@@ -18,8 +18,7 @@ module Atheme
       end
 
       yield self if block_given?
-
-      self.anonymous!
+      @cookie, @user, @ip = '.', '.', DEFAULT_IP
     end
 
     def login(user, password, ip=DEFAULT_IP)

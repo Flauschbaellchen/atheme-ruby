@@ -29,7 +29,7 @@ module Atheme
       def call(session, raw_output)
         @raw_output = raw_output
         value = self.instance_eval(&@block)
-        return value unless @opts[:as] || value.nil?
+        return value if !@opts[:as] || value.nil?
         @opts[:as].new(session, value)
       end
 

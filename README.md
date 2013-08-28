@@ -1,5 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/atheme-ruby.png)](http://badge.fury.io/rb/atheme-ruby) [![Dependency Status](https://gemnasium.com/Flauschbaellchen/atheme-ruby.png)](https://gemnasium.com/Flauschbaellchen/atheme-ruby)
+
 # atheme-ruby
-The gem was inspired by the one of [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
+The gem was inspired by [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
 However, his gem use module-methods and thus does not allow concurrent connections within the same script.
 
 ## Install
@@ -63,10 +65,11 @@ You may logout after you finished your work:
 ### Service-Calls
 
 This gem supports all service-bots of atheme, like chanserv, nickserv etc.
-You can call any commands you want to perform like you do on IRC:
+You can call any commands you want to perform like you do on IRC; subcommands goes into the first argument of the method:
 
-    @session.chanserv.info('#opers') # like /msg chanserv info #opers
-    @session.chanserv.list           # like /msg chanserv list
+    @session.chanserv.info('#opers')       # /msg chanserv info #opers
+    @session.chanserv.list                 # /msg chanserv list
+    @session.nickserv.help('set password') # /msg nickserv help password
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
@@ -76,6 +79,7 @@ However, you can perform additional questions on these return values:
     @session.chanserv.info('#opers').registered   #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
 
 Take a look into _lib/atheme/services/*_ to find available subcommands.
+The commands return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel. You can call #raw_output on these to get the raw service reply of the command you called.
 
 TODO
 ----
