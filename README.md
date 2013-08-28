@@ -41,7 +41,7 @@ If an option is missing, the default ones as stated above are used.
 
 ### Login
 
-The initial session uses an anonymous login which can be re-choosen by calling @session.anonymous! or by logging out.
+The initial session uses an anonymous login which can be re-choosen by  logging out.
 
 To login with an account registered with NickServ use the following:
 

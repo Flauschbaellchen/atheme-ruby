@@ -39,7 +39,6 @@ module Atheme
       @cookie, @user, @ip = '.', '.', DEFAULT_IP
       true
     end
-    alias_method :anonymous!, :logout
 
     def logged_in?
       @cookie && @cookie!='.' ? true : false
