@@ -4,12 +4,9 @@ However, his gem use module-methods and thus does not allow concurrent connectio
 
 ## Install
 
-Currently, no official gem yet exists, so you need to clone the repository and build it yourself:
+You can install the gem directly from rubygems.org:
 
-    git clone git@github.com:Flauschbaellchen/atheme-ruby.git
-    cd atheme-ruby
-    gem build atheme-ruby.gemspec
-    gem install atheme-ruby-x.x.x.gem
+    gem install atheme-ruby
 
 Standalone script:
 
