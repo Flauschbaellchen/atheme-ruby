@@ -69,7 +69,7 @@ You can call any commands you want to perform like you do on IRC; subcommands go
 
     @session.chanserv.info('#opers')       # /msg chanserv info #opers
     @session.chanserv.list                 # /msg chanserv list
-    @session.nickserv.help('set password') # /msg nickserv help password
+    @session.nickserv.help('set password') # /msg nickserv help set password
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
