@@ -33,7 +33,7 @@ module Atheme
       @session.nickserv.mark(self.name, :on, reason)
     end
 
-    # Unmark an previously marked account.
+    # Unmark a previously marked account.
     def unmark!
       @session.nickserv.mark(self.name, :off)
     end

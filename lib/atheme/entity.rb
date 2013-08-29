@@ -14,6 +14,8 @@ module Atheme
         @updated = false
         @token = hash_or_token
       end
+
+      yield self if block_given?
     end
 
     def method_missing(meth, *args, &block)

@@ -79,6 +79,14 @@ However, you can perform additional questions on these return values:
     @session.chanserv.info('#opers').registered          #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
     @session.nickserv.info("Nick").mark!("marking Nick") #=> Marks an user
 
+Or a bit simplier if you want to run multiple ones on one User/Channel/...
+
+    @session.nickserv.info("Nick") do |n|
+      n.mark!("marking...")
+      n.set_vhost!("omg.that.is.awesome")
+      n.reset_password!
+    end
+
 Take a look into _lib/atheme/services/*_ and _lib/atheme/entities/*_ to find available subcommands.
 The commands which call the API return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel etc. You can call #raw_output on these to get the raw service reply of the command you called.
 
