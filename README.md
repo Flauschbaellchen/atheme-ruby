@@ -1,5 +1,12 @@
 [![Gem Version](https://badge.fury.io/rb/atheme-ruby.png)](http://badge.fury.io/rb/atheme-ruby) [![Dependency Status](https://gemnasium.com/Flauschbaellchen/atheme-ruby.png)](https://gemnasium.com/Flauschbaellchen/atheme-ruby)
 
+This gem is a work-in-process. If you expire some bugs or search for features, try the master-branch first.
+I try to maintain the interface as stable as I can, but until I release version 0.1.0 or 1.0.0 it'll probably change sometimes.
+
+This README reflects the state of the master-branch.
+Please consider that some features might not have been officially released yet.
+Take a look at the commit history and the release date of the latest gem.
+
 # atheme-ruby
 The gem was inspired by [jameswritescode/atheme-ruby](https://github.com/jameswritescode/atheme-ruby/).
 However, his gem use module-methods and thus does not allow concurrent connections within the same script.
