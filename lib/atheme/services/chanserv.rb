@@ -21,7 +21,8 @@ module Atheme
       end
 
       command :last_used do
-        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+        time = match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)
+        time && Date.parse(time)
       end
 
       command :mode_lock do
