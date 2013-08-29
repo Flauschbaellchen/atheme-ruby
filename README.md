@@ -67,9 +67,15 @@ You may logout after you finished your work:
 This gem supports all service-bots of atheme, like chanserv, nickserv etc.
 You can call any commands you want to perform like you do on IRC; Each param goes into a different argument of the method:
 
+<<<<<<< HEAD
     @session.chanserv.info('#opers')                     # /msg chanserv info #opers
     @session.chanserv.list                               # /msg chanserv list
     @session.nickserv.mark("Nick", "ON", "marking Nick") # Marks Nick with a note
+=======
+    @session.chanserv.info('#opers')       # /msg chanserv info #opers
+    @session.chanserv.list                 # /msg chanserv list
+    @session.nickserv.help('set password') # /msg nickserv help set password
+>>>>>>> 33bb9183b32a68b9c723917cc6c7dafda35982c1
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
