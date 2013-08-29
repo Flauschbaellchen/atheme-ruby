@@ -65,21 +65,22 @@ You may logout after you finished your work:
 ### Service-Calls
 
 This gem supports all service-bots of atheme, like chanserv, nickserv etc.
-You can call any commands you want to perform like you do on IRC; subcommands goes into the first argument of the method:
+You can call any commands you want to perform like you do on IRC; Each param goes into a different argument of the method:
 
-    @session.chanserv.info('#opers')       # /msg chanserv info #opers
-    @session.chanserv.list                 # /msg chanserv list
-    @session.nickserv.help('set password') # /msg nickserv help password
+    @session.chanserv.info('#opers')                     # /msg chanserv info #opers
+    @session.chanserv.list                               # /msg chanserv list
+    @session.nickserv.mark("Nick", "ON", "marking Nick") # Marks Nick with a note
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
 
-    @session.chanserv.info('#opers').founder      #=> #<Atheme::User ...>
-    @session.chanserv.info('#opers').founder.name #=> "Nick_Of_Founder"
-    @session.chanserv.info('#opers').registered   #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
+    @session.chanserv.info('#opers').founder             #=> #<Atheme::User ...>
+    @session.chanserv.info('#opers').founder.name        #=> "Nick_Of_Founder"
+    @session.chanserv.info('#opers').registered          #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
+    @session.nickserv.info("Nick").mark!("marking Nick") #=> Marks an user
 
-Take a look into _lib/atheme/services/*_ to find available subcommands.
-The commands return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel. You can call #raw_output on these to get the raw service reply of the command you called.
+Take a look into _lib/atheme/services/*_ and _lib/atheme/entities/*_ to find available subcommands.
+The commands which call the API return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel etc. You can call #raw_output on these to get the raw service reply of the command you called.
 
 TODO
 ----
