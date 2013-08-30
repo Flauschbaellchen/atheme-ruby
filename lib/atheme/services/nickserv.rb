@@ -33,13 +33,11 @@ module Atheme
       end
 
       command :user_seen do
-        time = match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)
-        time && Date.parse(time)
+        Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
       end
 
       command :nicks do
-        nicks = match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/)
-        nicks && nicks.split || []
+        match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/).split rescue []
       end
 
       command :email do
@@ -51,8 +49,7 @@ module Atheme
       end
 
       command :flags do
-        flags = match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/)
-        flags && flags.split || []
+        match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/).split rescue []
       end
 
       command :protected do

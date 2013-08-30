@@ -39,8 +39,7 @@ module Atheme
       end
 
       def match(expression)
-        ematch = expression.match(raw_output)
-        ematch && ematch[1]
+        raw_output[expression, 1]
       end
     end
 

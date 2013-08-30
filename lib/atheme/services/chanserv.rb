@@ -21,8 +21,7 @@ module Atheme
       end
 
       command :last_used do
-        time = match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)
-        time && Date.parse(time)
+        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
       end
 
       command :mode_lock do
@@ -34,8 +33,7 @@ module Atheme
       end
 
       command :flags do
-        flags = match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/)
-        flags && flags.split || []
+        match(/Flags\s+:\s+(.+)$/).split rescue []
       end
 
       command :prefix do
