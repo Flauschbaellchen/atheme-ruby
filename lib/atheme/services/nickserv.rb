@@ -49,7 +49,7 @@ module Atheme
       end
 
       command :flags do
-        match(/Flags\s+:\s+(\w+(?:\s\w+)*)$/).split rescue []
+        match(/Flags\s+:\s+(.+)$/).split rescue []
       end
 
       command :protected do
@@ -57,8 +57,7 @@ module Atheme
       end
 
       command :groups do
-        flags = match(/Groups\s+:\s+(.+)$/)
-        flags && flags.split || []
+        match(/Groups\s+:\s+(.+)$/).split rescue []
       end
     end
   end
