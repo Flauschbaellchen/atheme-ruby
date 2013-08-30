@@ -50,12 +50,12 @@ If an option is missing, the default ones as stated above are used.
 
 ### Login
 
-The initial session uses an anonymous login which can be re-choosen by  logging out.
+The initial session uses an anonymous login which can be re-choosen by logging out.
 
 To login with an account registered with NickServ use the following:
 
     @session.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
-    @session.logged_in? #=> true or false
+    @session.logged_in?                                #=> true or false
 
 The cookie is a random generated string from Atheme for your current login session and will be valid for one(1) hour or until the server is shut down or restarted.
 
@@ -76,7 +76,7 @@ You can call any commands you want to perform like you do on IRC; Each param goe
 
     @session.chanserv.info('#opers')                     # /msg chanserv info #opers
     @session.chanserv.list                               # /msg chanserv list
-    @session.nickserv.mark("Nick", "ON", "marking Nick") # Marks Nick with a note
+    @session.nickserv.mark!("Nick", "ON", "marking Nick") # Marks Nick with a note
 
 I think you're getting the point...
 However, you can perform additional questions on these return values:
@@ -84,14 +84,14 @@ However, you can perform additional questions on these return values:
     @session.chanserv.info('#opers').founder             #=> #<Atheme::User ...>
     @session.chanserv.info('#opers').founder.name        #=> "Nick_Of_Founder"
     @session.chanserv.info('#opers').registered          #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
-    @session.nickserv.info("Nick").mark("marking Nick") #=> Marks an user
+    @session.nickserv.info("Nick").mark!("marking Nick") #=> Marks an user
 
 Or a bit simplier if you want to run multiple ones on one User/Channel/...
 
     @session.nickserv.info("Nick") do |n|
-      n.mark("marking...")
-      n.set_vhost("omg.that.is.awesome")
-      n.reset_password
+      n.mark!("marking...")
+      n.vhost!("omg.that.is.awesome")
+      n.reset_password!
     end
 
 Take a look into _lib/atheme/services/*_ and _lib/atheme/entities/*_ to find available subcommands.
@@ -104,7 +104,7 @@ There are many possibilities that something went wrong, especially if you have a
 
 You can test if your command or your command-chain run successfully by asking #success? or #error? on it.
 
-    cmd = @session.chanserv.info("#opers").fdrop
+    cmd = @session.chanserv.info("#opers").fdrop!
     cmd.success? #=> true on success, false otherwise
 
 If the API returned an error, you can inspect it:
