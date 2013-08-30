@@ -42,8 +42,13 @@ module Atheme
     def fetchable?
       true
     end
-
     private :do_fetch!, :fetchable?
+
+    private
+    def match(expression)
+      raw_output[expression, 1]
+    end
+
   end
 
   class Entity < EntityBase

@@ -5,6 +5,78 @@ module Atheme
       @session.nickserv.info(@token)
     end
 
+    # Returns the nickname (not account name) of the user
+    def name
+      match(/^Information\son\s([^\s]+)/)
+    end
+
+    # Returns the account name of the user as a Atheme::User object.
+    # It can be the same as the nick name if it is the main-nick
+    def account
+      Atheme::User.new(@session, match(/\(account\s([^\(]+)\):/))
+    end
+
+    # Date object which is set to the time when the nick was registered
+    def registered
+      Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+    end
+
+    # Unique entity ID. Available only if the user is currently connected
+    def entity_id
+      match(/Entity\sID\s+:\s+([A-F0-9]+)$/)
+    end
+
+    # Returns the vhost of the nick if set
+    def vhost
+      match(/vHost\s+:\s+([^\s]+)$/)
+    end
+
+    # Real address of the user's connection
+    def real_address
+      match(/Real\saddr\s+:\s+([^\s]+)$/)
+    end
+
+    # Date object of the time when the nick was last seen
+    def last_seen
+      Date.parse(match(/Last\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+    end
+
+    # Date object of the time when the user was last seen
+    def user_seen
+      Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
+    end
+
+    # Returns an array of linked nicknames to this nick/account
+    def nicks
+      match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/).split rescue []
+    end
+
+    # Returns the user's email
+    def email
+      match(/Email\s+:\s+([^\s]+)/)
+    end
+
+    # Returns the user's language
+    def language
+      match(/Language\s+:\s+([\w]+)$/)
+    end
+
+    # Returns the user's flags as an array, e.g. HideMail
+    def flags
+      match(/Flags\s+:\s+(.+)$/).split rescue []
+    end
+
+    # Returns true if the user enabled nick protection, false otherwise
+    def protected
+      match(/has\s(enabled)\snick\sprotection/) ? true : false
+    end
+    alias_method :protected?, :protected
+
+    # Returns the user's groups as an array,
+    def groups
+      match(/Groups\s+:\s+(.+)$/).split rescue []
+    end
+
     # Forcefully removes the account, including
     # all nicknames, channel access and memos attached to it.
     # Only opers may use this.

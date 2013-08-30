@@ -5,6 +5,53 @@ module Atheme
       @session.chanserv.info(@token)
     end
 
+    # Returns the channel's name
+    def name
+      match(/^Information\son\s([&#+][^:]+):$/)
+    end
+
+    # Returns the founder as an Atheme::User object
+    def founder
+      Atheme::User.new(@session, match(/Founder\s+:\s+(\w+)/))
+    end
+
+    # Returns the successor as an Atheme::User object
+    # Returns nil if noone has been set
+    def successor
+      match(/Successor\s+:\s+\(none\)/) ? nil : Atheme::User.new(@session, match(/Successor\s+:\s+(\w+)/))
+    end
+
+    # Date object which is set to the time when the channel was registered
+    def registered
+      Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+    end
+
+    # Date object which is set to the time when the channel was last used
+    def last_used
+      Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
+    end
+
+    # String of the mode locked on the channel, e.g. "+Ctn-ksi"
+    def mode_lock
+      match(/Mode\slock\s+:\s+([-+A-Za-z0-9]*)/)
+    end
+
+    # Entry message of the channel, if set - otherwise nil.
+    def entry_msg
+      match(/Entrymsg\s+:\s+(.+)/)
+    end
+
+    # Array of channel flags
+    def flags
+      match(/Flags\s+:\s+(.+)$/).split rescue []
+    end
+
+    # Prefix character used on the channel, e.g. "!"
+    def prefix
+      match(/Prefix\s+:\s+([^\s])/)
+    end
+
+
     # Forcefully removes the channel, including
     # all data associated with it (like access lists etc)
     # and cannot be restored.
@@ -169,8 +216,8 @@ module Atheme
         when nick.kind_of?(Array)
           nick.each do |n|
             change_permissions(perm, self.name, n)
-          end
-      end
+        end
+    end
     end
 
   end

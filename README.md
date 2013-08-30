@@ -112,7 +112,7 @@ If the API returned an error, you can inspect it:
     cmd.error           #=> Holds the Exception ($!)
     cmd.skipped_methods #=> Array of [method, args, block] which have been skipped due to the exception
 
-You can read more about the fault codes here: [Atheme XMLRPC - Faul codes](https://github.com/atheme/atheme/blob/master/doc/XMLRPC#L106)
+You can read more about the fault codes here: [Atheme XMLRPC - Fault codes](https://github.com/atheme/atheme/blob/master/doc/XMLRPC#L106)
 
 
 TODO

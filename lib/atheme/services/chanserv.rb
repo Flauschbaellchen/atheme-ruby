@@ -3,42 +3,6 @@ module Atheme
 
     parse :info do
       responds_with Atheme::Channel
-
-      command :name do
-        match(/^Information\son\s([&#+][^:]+):$/)
-      end
-
-      command :founder, as: Atheme::User do
-        match(/Founder\s+:\s+(\w+)/)
-      end
-
-      command :successor, as: Atheme::User do
-        match(/Successor\s+:\s+\(none\)/) ? nil : match(/Successor\s+:\s+(\w+)/)
-      end
-
-      command :registered do
-        Date.parse(match(/Registered\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
-      end
-
-      command :last_used do
-        Date.parse(match(/Last\sused\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
-      end
-
-      command :mode_lock do
-        match(/Mode\slock\s+:\s+([-+A-Za-z0-9]*)/)
-      end
-
-      command :entry_msg do
-        match(/Entrymsg\s+:\s+(.+)/)
-      end
-
-      command :flags do
-        match(/Flags\s+:\s+(.+)$/).split rescue []
-      end
-
-      command :prefix do
-        match(/Prefix\s+:\s+([^\s])/)
-      end
     end
 
     parse :list do
