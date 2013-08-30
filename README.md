@@ -97,12 +97,29 @@ Or a bit simplier if you want to run multiple ones on one User/Channel/...
 Take a look into _lib/atheme/services/*_ and _lib/atheme/entities/*_ to find available subcommands.
 The commands which call the API return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel etc. You can call #raw_output on these to get the raw service reply of the command you called.
 
+### Error-Handling
+
+Errors can occur if you do not have the permissions to run a command you would like, specifies the wrong arguments or forget one.
+There are many possibilities that something went wrong, especially if you have a long command-chain.
+
+You can test if your command or your command-chain run successfully by asking #success? or #error? on it.
+
+    cmd = @session.chanserv.info("#opers").fdrop!
+    cmd.success? #=> true on success, false otherwise
+
+If the API returned an error, you can inspect it:
+
+    cmd.error           #=> Holds the Exception ($!)
+    cmd.skipped_methods #=> Array of [method, args, block] which have been skipped due to the exception
+
+You can read more about the fault codes here: [Atheme XMLRPC - Faul codes](https://github.com/atheme/atheme/blob/master/doc/XMLRPC#L106)
+
+
 TODO
 ----
 * Tests!
 * Docs!
 * Add more parsers/subcommands to all kinds of services (pull requests welcome)
-* Brainstorming: Catch API-Errors and handle them gracefully. Provide a #success? method to decide if the command was successfully executed or not. Need to handle chains like the ones above.
 
 Contributing to atheme-ruby
 ---------------------------

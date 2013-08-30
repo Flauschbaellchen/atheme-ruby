@@ -76,8 +76,11 @@ module Atheme
     end
 
     def method_missing(method, *args, &block)
-      raw_output = @session.service_call(service_name, method, *args)
-
+      begin
+        raw_output = @session.service_call(service_name, method, *args)
+      rescue
+        return Atheme::Error.new
+      end
       response = {raw_output: raw_output}
       parser = @@parsers.has_key?(service_name) && @@parsers[service_name][method]
 
