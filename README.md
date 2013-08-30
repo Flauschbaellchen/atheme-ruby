@@ -115,6 +115,11 @@ If the API returned an error, you can inspect it:
 You can read more about the fault codes here: [Atheme XMLRPC - Fault codes](https://github.com/atheme/atheme/blob/master/doc/XMLRPC#L106)
 
 
+### Known limitations/bugs
+
+* [Attributes of entities do not update until refetch/reinitialize of the whole object](https://github.com/Flauschbaellchen/atheme-ruby/issues/1)
+
+
 TODO
 ----
 * Tests!
