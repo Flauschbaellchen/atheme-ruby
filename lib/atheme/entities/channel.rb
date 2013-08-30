@@ -56,7 +56,7 @@ module Atheme
     # all data associated with it (like access lists etc)
     # and cannot be restored.
     # Only opers may use this.
-    def fdrop
+    def fdrop!
       @session.chanserv.fdrop(self.name)
     end
 
@@ -72,14 +72,14 @@ module Atheme
     # channels will still expire.
     # 
     # Only opers may use this.
-    def close(reason)
+    def close!(reason)
       @session.chanserv.close(self.name, :on, reason)
     end
 
     # Opens a previously closed channel.
     # 
     # Only opers may use this.
-    def open
+    def open!
       @session.chanserv.close(self.name, :off)
     end
     alias_method :unclose, :open
@@ -152,12 +152,12 @@ module Atheme
 
     # mark allows operators to attach a note to a channel.
     # For example, an operator could mark the channel to be a botnet channel.
-    def mark(reason)
+    def mark!(reason)
       @session.chanserv.mark(self.name, :on, reason)
     end
 
     # Unmark a previously marked channel.
-    def unmark
+    def unmark!
       @session.chanserv.mark(self.name, :off)
     end
 
@@ -173,7 +173,7 @@ module Atheme
     #  
     # If you are on channel, you will be opped and
     # no ban exception will be added.
-    def recover
+    def recover!
       @session.chanserv.recover(self.name)
     end
 
@@ -197,17 +197,17 @@ module Atheme
     end
 
     # Sets a topic on the channel.
-    def topic(topic)
+    def topic!(topic)
       @session.chanserv.topic(self.name, topic)
     end
 
     # Prepends something to the topic on the channel.
-    def prepend_topic(topic)
+    def prepend_topic!(topic)
       @session.chanserv.topicprepend(self.name, topic)
     end
 
     private
-    def change_permissions(perm, nick=nil)
+    def change_permissions(perm, nick)
       case
         when nick.kind_of?(String)
           @session.chanserv.send(perm, self.name, nick)

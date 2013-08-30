@@ -10,8 +10,7 @@ module Atheme
       match(/^Information\son\s([^\s]+)/)
     end
 
-    # Returns the account name of the user as a Atheme::User object.
-    # It can be the same as the nick name if it is the main-nick
+    # Returns the account name of the user as an Atheme::User object
     def account
       Atheme::User.new(@session, match(/\(account\s([^\(]+)\):/))
     end
@@ -80,7 +79,7 @@ module Atheme
     # Forcefully removes the account, including
     # all nicknames, channel access and memos attached to it.
     # Only opers may use this.
-    def fdrop
+    def fdrop!
       @session.nickserv.fdrop(self.name)
     end
 
@@ -88,12 +87,12 @@ module Atheme
     # account. This logs out all sessions logged in to the
     # account and prevents further logins. Thus, users
     # cannot obtain the access associated with the account.
-    def freeze(reason)
+    def freeze!(reason)
       @session.nickserv.freeze(self.name, :on, reason)
     end
 
     # Unfreeze an previously frozen account.
-    def unfreeze
+    def unfreeze!
       @session.nickserv.freeze(self.name, :off)
     end
 
@@ -101,12 +100,12 @@ module Atheme
     # For example, an operator could mark the account of
     # a spammer so that others know the user has previously
     # been warned.
-    def mark(reason)
+    def mark!(reason)
       @session.nickserv.mark(self.name, :on, reason)
     end
 
     # Unmark a previously marked account.
-    def unmark
+    def unmark!
       @session.nickserv.mark(self.name, :off)
     end
 
@@ -114,18 +113,19 @@ module Atheme
     # known as a spoof or cloak) on an account. This vhost
     # will be set on the user immediately and each time
     # they identify
-    def set_vhost(vhost)
-      @session.nickserv.vhost(self.name, :on, vhost)
+    # If no vhost is given, the current one will be deleted.
+    def vhost!(vhost=nil)
+      vhost.nil? ? remove_vhost! : @session.nickserv.vhost(self.name, :on, vhost)
     end
 
     # Removes a previously added vhost from the account
-    def remove_vhost
+    def remove_vhost!
       @session.nickserv.vhost(self.name, :off)
     end
 
     # Sets a random password for this account.
     # Only opers may use this.
-    def reset_password
+    def reset_password!
       @session.nickserv.resetpass(self.name)
     end
   end
