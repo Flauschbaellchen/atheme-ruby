@@ -32,13 +32,37 @@ module Atheme
     end
 
     # String of the mode locked on the channel, e.g. "+Ctn-ksi"
-    def mode_lock
+    def mlock
       match(/Mode\slock\s+:\s+([-+A-Za-z0-9]*)/)
     end
+    alias_method :mode_lock, :mlock
+
+    # Sets the given mlock/mode lock on the channel, e.g. +mntF-kljf or +ntlL 40 #foo2
+    def mlock!(modes)
+      @session.chanserv.set(self.name, :mlock, modes)
+    end
+    alias_method :mode_lock!, :mlock!
 
     # Entry message of the channel, if set - otherwise nil.
-    def entry_msg
+    def entrymsg
       match(/Entrymsg\s+:\s+(.+)/)
+    end
+
+    # Sets the entrymsg for the channel.
+    # Call without arguments to clear it.
+    def entrymsg!(msg=nil)
+      msg.kind_of?(String) ? @session.chanserv.set(self.name, :entrymsg, msg) : @session.chanserv.set(self.name, :entrymsg)
+    end
+
+    # Returns the hannel's URL if one has been set, otherwise nil.
+    def url
+      match(/URL\s+:\s+(.+)/)
+    end
+
+    # Sets the URL for the channel.
+    # Call without arguments to clear it.
+    def url!(url=nil)
+      url.kind_of?(String) ? @session.chanserv.set(self.name, :url, url) : @session.chanserv.set(self.name, :url)
     end
 
     # Array of channel flags
@@ -51,6 +75,14 @@ module Atheme
       match(/Prefix\s+:\s+([^\s])/)
     end
 
+    # Allows you to customize the channel fantasy trigger
+    # for your channel. This is particularly useful if you have
+    # channel bots that conflict with ChanServ's default fantasy
+    # prefix. Providing no prefix argument (or DEFAULT) resets
+    # the channel fantasy prefix to the network default prefix
+    def prefix!(prefix="DEFAULT")
+      @session.chanserv.set(self.name, :prefix, prefix)
+    end
 
     # Forcefully removes the channel, including
     # all data associated with it (like access lists etc)
