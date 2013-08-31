@@ -28,6 +28,14 @@ module Atheme
       raise "#{self} does not know how to update itself. Slap the developer!"
     end
 
+    def error?
+      false
+    end
+
+    def success?
+      true
+    end
+
     def do_fetch!
       @updated = true
       result = fetch!
