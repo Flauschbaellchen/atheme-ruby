@@ -28,13 +28,13 @@ module Atheme
     # IP is optional and only for logging purposes, defaults to 127.0.0.1.
     # Returns a cookie on success, an Atheme::Error otherwise
     def login(user, password, ip=DEFAULT_IP)
-      @cookie = self.call("atheme.login", user, password, ip)
-      if @cookie.kind_of?(String)
-        @user, @ip = user, ip
+      cookie_or_error = self.call("atheme.login", user, password, ip)
+      if cookie_or_error.kind_of?(String)
+        @cookie, @user, @ip = cookie_or_error, user, ip
       else # should be Atheme::Error
         @cookie, @user, @ip = '.', '.', DEFAULT_IP
       end
-      return @cookie
+      return cookie_or_error
     end
 
     # Relogin into the services using a previously created cookie
