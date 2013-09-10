@@ -11,4 +11,14 @@ module Atheme::Helpers
 
     constant
   end
+
+  class List < Array
+
+    def method_missing(method, *args, &block)
+      method = method.to_s.singularize.to_sym
+      return self.map {|v| v[method] }.flatten if self.first.has_key? method
+      super
+    end
+
+  end
 end
