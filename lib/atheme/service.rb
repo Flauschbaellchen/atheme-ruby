@@ -28,14 +28,19 @@ module Atheme
 
       def call(session, raw_output)
         @raw_output = raw_output
+        @session = session
         value = self.instance_eval(&@block)
         return value if !@opts[:as] || value.nil?
-        @opts[:as].new(session, value)
+        @opts[:as].new(@session, value)
       end
 
       private
       def raw_output
         @raw_output
+      end
+
+      def session
+        @session
       end
 
       def match(expression)
