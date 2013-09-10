@@ -83,12 +83,11 @@ module Atheme
       parser = @@parsers.has_key?(service_name) && @@parsers[service_name][method]
 
       return Atheme::Entity.new(@session, response, &block) unless parser
-      
       parser.commands.each do |command|
         response[command.name] = command.call(@session, raw_output)
       end
       return parser.responder.new(@session, response, &block) if parser.responder
-      return response
+      return Atheme::Entity.new(@session, response, &block)
     end
 
     private
