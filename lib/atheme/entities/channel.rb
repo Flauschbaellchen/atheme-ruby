@@ -1,5 +1,5 @@
 module Atheme
-  class Channel < Entity
+  class Channel < EntityBase
 
     def fetch! #:nodoc:
       @session.chanserv.info(@token)
