@@ -71,8 +71,8 @@ module Atheme
       @@staged_parser.register_command(Atheme::Service::Command.new(name, opts, &block))
     end
 
-    def self.responds_with(atheme_class)
-      @@staged_parser.responder = atheme_class
+    def self.responds_with(atheme_class=nil, &block)
+      @@staged_parser.responder = atheme_class || block
     end
 
     def initialize(session)
@@ -81,17 +81,33 @@ module Atheme
 
     def method_missing(method, *args, &block)
       raw_output = @session.service_call(service_name, method, *args)
-      if raw_output.kind_of?(Atheme::Error)
-        return raw_output
-      end
+      
+      #if an error occurred, just return it to the user
+      return raw_output if raw_output.kind_of?(Atheme::Error)
+
+      #building up the response hash...
       response = {raw_output: raw_output}
+
+      #get the parser of the method registered with 'parse :key'
       parser = @@parsers.has_key?(service_name) && @@parsers[service_name][method]
 
+      #no parser is available, return generic Entity which holds only the raw_output
       return Atheme::Entity.new(@session, response, &block) unless parser
+
+      #a responds_with is defined and associates a block
+      #we do not need any further command-handling
+      #as we only serve the raw_output if the request
+      return parser.responder.call(@session, response[:raw_output]) if parser.responder && parser.responder.kind_of?(Proc)
+
+      #add further commands/key-values to the hash registered with 'command :key'
       parser.commands.each do |command|
         response[command.name] = command.call(@session, raw_output)
       end
+      
+      #create a special Entity registered with resonds_with if available
       return parser.responder.new(@session, response, &block) if parser.responder
+
+      #last but not least, return a generic Entity but with extended commands/values
       return Atheme::Entity.new(@session, response, &block)
     end
 
