@@ -1,8 +1,8 @@
 module Atheme
   class User < EntityBase
 
-    def fetch! #:nodoc:
-      @session.nickserv.info(@token)
+    def update! #:nodoc:
+      @raw = @session.service_call("nickserv", "info", @token)
     end
 
     # Returns the nickname (not account name) of the user
@@ -37,7 +37,8 @@ module Atheme
 
     # Date object of the time when the nick was last seen
     def last_seen
-      Date.parse(match(/Last\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/))
+      return Time.now.to_date if match(/Last\sseen\s+:\s(now)/)
+      Date.parse(match(/Last\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
     end
 
     # Date object of the time when the user was last seen

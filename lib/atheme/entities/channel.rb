@@ -1,8 +1,8 @@
 module Atheme
   class Channel < EntityBase
 
-    def fetch! #:nodoc:
-      @session.chanserv.info(@token)
+    def update! #:nodoc:
+      @raw = @session.service_call("chanserv", "info", @token)
     end
 
     # Returns the channel's name

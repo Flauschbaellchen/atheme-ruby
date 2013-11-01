@@ -2,33 +2,23 @@ module Atheme
   class EntityBase
 
     attr_reader :token
-    def initialize(session, hash_or_token)
+    def initialize(session, raw_or_token)
       @session = session
-      if hash_or_token.kind_of?(Hash)
-        @updated = true
-        hash_or_token.each do |k, v|
-          self.instance_variable_set("@#{k}".to_sym, v)
-          define_singleton_method(k) { v }
-        end
+      @raw = nil
+      if raw_or_token.kind_of?(Hash)
+        @raw = raw_or_token[:raw]
       else
-        @updated = false
-        @token = hash_or_token
+        @token = raw_or_token
       end
 
       yield self if block_given?
     end
 
-    def method_missing(meth, *args, &block)
-      super if @updated || !fetchable?
-      do_fetch!
-      self.send(meth, *args, &block)
+    def update!
+      raise "#{self} does not know how to update itself. Slap the developer!"
     end
 
     def to_ary; end
-
-    def fetch!
-      raise "#{self} does not know how to update itself. Slap the developer!"
-    end
 
     def error?
       false
@@ -38,32 +28,20 @@ module Atheme
       true
     end
 
-    def do_fetch!
-      @updated = true
-      result = fetch!
-      result.instance_variables.each do |key|
-        next if [:@session, :@updated, :@token].include? key
-        v = result.instance_variable_get(key)
-        self.instance_variable_set(key, v)
-        define_singleton_method(key.to_s[1..-1].to_sym) { v }
-      end
+    def raw
+      @raw || update!
     end
-    
-    def fetchable?
-      true
-    end
-    private :do_fetch!, :fetchable?
 
     private
     def match(expression)
-      raw_output[expression, 1]
+      raw[expression, 1]
     end
 
   end
 
   class Entity < EntityBase
-    def fetchable?
-      false
+    def update!
+      @raw = ""
     end
   end
 end

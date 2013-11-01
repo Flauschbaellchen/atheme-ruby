@@ -3,9 +3,9 @@ module Atheme
 
     # Returns an Atheme::Helpers::List
     # with {user: Atheme::User, vhost: String}
-    parse :listvhost do
-      responds_with do |session, raw_output|
-        output = raw_output.split("\n")[0..-2]
+    def listvhost
+      call("listvhost") do |raw|
+        output = raw.split("\n")[0..-2]
 
         output.map! do |info|
           out = info.split(" ")

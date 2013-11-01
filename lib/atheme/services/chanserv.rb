@@ -2,15 +2,15 @@ module Atheme
   class ChanServ < Service
 
     # Returns an Atheme::Channel entity which holds all information about the requested channel
-    parse :info do
-      responds_with Atheme::Channel
+    def info(channel)
+      Atheme::Channel.new(session, channel)
     end
 
     # Returns an Atheme::Helpers::List
     # with {channel: Atheme::Channel, founder: Atheme::User}
-    parse :list do
-      responds_with do |session, raw_output|
-        output = raw_output.split("\n")
+    def list
+      call("list") do |raw|
+        output = raw.split("\n")
         output.delete_at(0)
         output.delete_at(output.length - 1)
 
