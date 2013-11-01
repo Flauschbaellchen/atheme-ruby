@@ -31,21 +31,21 @@ And you're ready to rumble!
 
 To instantiate, you can either pass the required arguments as options in a
 hash, like so:
-
-    Atheme::Session.new(
-      protocol: "http",
-      hostname: "localhost",
-      port: 8080
-    )
-
+```ruby
+@session = Atheme::Session.new(
+  protocol: "http",
+  hostname: "localhost",
+  port: 8080
+)
+```
 and/or use the builder idiom:
-
-    Atheme::Session.new do |c| 
-      c.protocol = "http"
-      c.hostname = "localhost"
-      c.port = 8080
-    end
-
+```ruby
+@session = Atheme::Session.new do |c| 
+  c.protocol = "http"
+  c.hostname = "localhost"
+  c.port = 8080
+end
+```
 If an option is missing, the default ones as stated above are used.
 
 ### Login
@@ -53,47 +53,48 @@ If an option is missing, the default ones as stated above are used.
 The initial session uses an anonymous login which can be re-choosen by logging out.
 
 To login with an account registered with NickServ use the following:
-
-    @session.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
-    @session.logged_in?                                #=> true or false
-
+```ruby
+@session.login(username, password, ip="127.0.0.1") #=> you'll get a cookie on success
+@session.logged_in?                                #=> true or false
+```
 The cookie is a random generated string from Atheme for your current login session and will be valid for one(1) hour or until the server is shut down or restarted.
 
 You can relogin using the cookie by calling:
-
-    @session.relogin(cookie, user, ip="127.0.0.1")
-
+```ruby
+@session.relogin(cookie, user, ip="127.0.0.1")
+```
 which saves you from asking users everytime again for their passwords.
 
 You may logout after you finished your work:
-
-    @session.logout
+```ruby
+@session.logout
+```
 
 ### Service-Calls
 
 This gem supports all service-bots of atheme, like chanserv, nickserv etc.
 You can call any commands you want to perform like you do on IRC; Each param goes into a different argument of the method:
-
-    @session.chanserv.info('#opers')                     # /msg chanserv info #opers
-    @session.chanserv.list                               # /msg chanserv list
-    @session.nickserv.mark!("Nick", "ON", "marking Nick") # Marks Nick with a note
-
+```ruby
+@session.chanserv.info('#opers')                     # /msg chanserv info #opers
+@session.chanserv.list                               # /msg chanserv list
+@session.nickserv.mark!("Nick", "ON", "marking Nick") # Marks Nick with a note
+```
 I think you're getting the point...
 However, you can perform additional questions on these return values:
-
-    @session.chanserv.info('#opers').founder             #=> #<Atheme::User ...>
-    @session.chanserv.info('#opers').founder.name        #=> "Nick_Of_Founder"
-    @session.chanserv.info('#opers').registered          #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
-    @session.nickserv.info("Nick").mark!("marking Nick") #=> Marks an user
-
+```ruby
+@session.chanserv.info('#opers').founder             #=> #<Atheme::User ...>
+@session.chanserv.info('#opers').founder.name        #=> "Nick_Of_Founder"
+@session.chanserv.info('#opers').registered          #=> #<Date: 2013-05-13 ((2456426j,0s,0n),+0s,2299161j)>
+@session.nickserv.info("Nick").mark!("marking Nick") #=> Marks an user
+```
 Or a bit simplier if you want to run multiple ones on one User/Channel/...
-
-    @session.nickserv.info("Nick") do |n|
-      n.mark!("marking...")
-      n.vhost!("omg.that.is.awesome")
-      n.reset_password!
-    end
-
+```ruby
+@session.nickserv.info("Nick") do |n|
+  n.mark!("marking...")
+  n.vhost!("omg.that.is.awesome")
+  n.reset_password!
+end
+```
 Take a look into _lib/atheme/services/*_ and _lib/atheme/entities/*_ to find available subcommands.
 The commands which call the API return a Atheme::Entity or a subclass like Atheme::User or Atheme::Channel etc. You can call #raw_output on these to get the raw service reply of the command you called.
 
@@ -103,15 +104,15 @@ Errors can occur if you do not have the permissions to run a command you would l
 There are many possibilities that something went wrong, especially if you have a long command-chain.
 
 You can test if your command or your command-chain run successfully by asking #success? or #error? on it.
-
-    cmd = @session.chanserv.info("#opers").fdrop!
-    cmd.success? #=> true on success, false otherwise
-
+```ruby
+cmd = @session.chanserv.info("#opers").fdrop!
+cmd.success? #=> true on success, false otherwise
+```
 If the API returned an error, you can inspect it:
-
-    cmd.error           #=> Holds the Exception ($!)
-    cmd.skipped_methods #=> Array of [method, args, block] which have been skipped due to the exception
-
+```ruby
+cmd.error           #=> Holds the Exception ($!)
+cmd.skipped_methods #=> Array of [method, args, block] which have been skipped due to the exception
+```
 You can read more about the fault codes here: [Atheme XMLRPC - Fault codes](https://github.com/atheme/atheme/blob/master/doc/XMLRPC#L106)
 
 
@@ -141,4 +142,3 @@ Copyright
 ---------
 
 Copyright (c) 2013 Noxx/Flauschbaellchen. See LICENSE for further details.
-
