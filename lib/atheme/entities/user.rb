@@ -10,6 +10,7 @@ module Atheme
       @token
       #match(/^Information\son\s([^\s]+)/)
     end
+    alias_method :to_s, :name
 
     # Returns the account name of the user as an Atheme::User object
     def account

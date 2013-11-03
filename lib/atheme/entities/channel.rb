@@ -15,6 +15,7 @@ module Atheme
       @token
       #match(/^Information\son\s([&#+][^:]+):$/)
     end
+    alias_method :to_s, :name
 
     # Returns the founder as an Atheme::User object
     def founder
