@@ -1,16 +1,13 @@
 module Atheme
   class Service
-    @@parsers = Hash.new
 
     def self.inherited(klass)
-      class_name = klass.name.gsub('Atheme::', '')
+      class_name = klass.name.gsub('Atheme::', '').downcase
       Atheme::Session.class_eval <<-RUBY
-        def #{class_name.downcase}
-          @#{class_name.downcase} ||= #{klass.name}.new(self)
+        def #{class_name}
+          @#{class_name} ||= #{klass.name}.new(self)
         end
       RUBY
-
-      @@parsers[class_name.downcase] ||= Hash.new
     end
 
     def initialize(session)
