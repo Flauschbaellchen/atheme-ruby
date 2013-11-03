@@ -7,7 +7,8 @@ module Atheme
 
     # Returns the nickname (not account name) of the user
     def name
-      match(/^Information\son\s([^\s]+)/)
+      @token
+      #match(/^Information\son\s([^\s]+)/)
     end
 
     # Returns the account name of the user as an Atheme::User object
@@ -129,5 +130,8 @@ module Atheme
     def reset_password!
       @session.nickserv.resetpass(self.name)
     end
+
+    enforce_raw_error_check_on :account, :registered,
+      :last_seen, :user_seen
   end
 end

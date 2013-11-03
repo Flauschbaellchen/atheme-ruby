@@ -5,6 +5,7 @@ module Atheme
     def info(channel)
       Atheme::Channel.new(session, channel)
     end
+    alias_method :channel, :info
 
     # Returns an Atheme::Helpers::List
     # with {channel: Atheme::Channel, founder: Atheme::User}

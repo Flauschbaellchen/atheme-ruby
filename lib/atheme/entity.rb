@@ -14,6 +14,16 @@ module Atheme
       yield self if block_given?
     end
 
+    def self.enforce_raw_error_check_on(*methods)
+      methods.each do |method|
+        m = instance_method(method)
+        define_method(method) do |*args, &block|
+          return raw.send(method, args, block) if error?
+          m.bind(self).(*args, &block)
+        end
+      end
+    end
+
     def update!
       raise "#{self} does not know how to update itself. Slap the developer!"
     end
@@ -21,11 +31,11 @@ module Atheme
     def to_ary; end
 
     def error?
-      false
+      !success?
     end
 
     def success?
-      true
+      raw.kind_of?(String)
     end
 
     def raw
@@ -35,6 +45,11 @@ module Atheme
     private
     def match(expression)
       raw[expression, 1]
+    end
+
+    def check_success
+      return @raw if error?
+      yield
     end
 
   end

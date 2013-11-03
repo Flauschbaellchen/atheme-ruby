@@ -5,9 +5,15 @@ module Atheme
       @raw = @session.service_call("chanserv", "info", @token)
     end
 
+    # Checks if the channel is currently registered and returns either true or the Atheme::Error
+    def registered?
+      true
+    end
+
     # Returns the channel's name
     def name
-      match(/^Information\son\s([&#+][^:]+):$/)
+      @token
+      #match(/^Information\son\s([&#+][^:]+):$/)
     end
 
     # Returns the founder as an Atheme::User object
@@ -249,8 +255,10 @@ module Atheme
           nick.each do |n|
             change_permissions(perm, self.name, n)
         end
-    end
+      end
     end
 
+    enforce_raw_error_check_on :founder, :successor,
+      :registered, :last_used
   end
 end
