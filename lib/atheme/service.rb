@@ -18,7 +18,7 @@ module Atheme
     end
 
     def method_missing(method, *args, &block)
-      raw_output = call(service_name, method, *args)
+      raw_output = call(method, *args)
       #if an error occurred, just return it to the user
       return raw_output if raw_output.kind_of?(Atheme::Error)
       #return generic entity as we couldn't handle it ourself
