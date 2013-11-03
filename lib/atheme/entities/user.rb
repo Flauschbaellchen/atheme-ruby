@@ -47,9 +47,9 @@ module Atheme
       Date.parse(match(/User\sseen\s+:\s+(\w+ [0-9]{2} [0-9(:?)]+ [0-9]{4})/)) rescue nil
     end
 
-    # Returns an array of linked nicknames to this nick/account
+    # Returns an array of linked nicknames (as Atheme::User) to this nick/account
     def nicks
-      match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/).split rescue []
+      match(/Nicks\s+:\s+([^\s]+(?:\s[^\s]+)*)$/).split.map{|nick| Atheme::User.new(@session, nick)} rescue []
     end
 
     # Returns the user's email
